@@ -11,31 +11,69 @@ class Graph:
         """
         Add a vertex to the graph.
         """
-        pass  # TODO
+        self.vertices[vertex] = set()
+
     def add_edge(self, v1, v2):
         """
         Add a directed edge to the graph.
         """
-        pass  # TODO
+        if v1 in self.vertices:
+            self.vertices[v1].add(v2)
+        else:
+            self.vertices[v1] = set([v2])
+
+        if v2 not in self.vertices:
+            self.vertices[v2] = set()
+
     def bft(self, starting_vertex):
         """
         Print each vertex in breadth-first order
         beginning from starting_vertex.
         """
-        pass  # TODO
+        q = Queue()
+        visited_nodes = set()
+
+        # add starting vertex
+        q.enqueue(starting_vertex)
+
+        while q.size() > 0:
+            v = q.dequeue()
+            if v in visited_nodes:
+                continue
+
+            print(v)
+            visited_nodes.add(v)
+            for vertex in self.vertices[v]:
+                q.enqueue(vertex)
+
     def dft(self, starting_vertex):
         """
         Print each vertex in depth-first order
         beginning from starting_vertex.
         """
-        pass  # TODO
+        s = Stack()
+        visited_nodes = set()
+
+        # add starting vertex
+        s.push(starting_vertex)
+
+        while s.size() > 0:
+            v = s.pop()
+            if v in visited_nodes:
+                continue
+
+            print(v)
+            visited_nodes.add(v)
+            for vertex in self.vertices[v]:
+                s.push(vertex)
+
     def dft_recursive(self, starting_vertex):
         """
         Print each vertex in depth-first order
         beginning from starting_vertex.
         This should be done using recursion.
         """
-        pass  # TODO
+
     def bfs(self, starting_vertex, destination_vertex):
         """
         Return a list containing the shortest path from
