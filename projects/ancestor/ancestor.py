@@ -31,7 +31,8 @@ class Graph:
     def find_earliest_ancestor(self, starting_vertex):
         # create an empty set to store visited nodes
         visited = set()
-        if starting_vertex not in self.vertices:
+        if (starting_vertex not in self.vertices
+        or len(self.vertices[starting_vertex]) == 0):
             return -1
 
         # create an empty Queue and enqueue a path to the starting vertex
@@ -62,23 +63,37 @@ class Graph:
                     # append neighbor to the back of the copy
                     path_copy.append(neighbor)
 
+                    # check that longest path isn't shorter than the new path
                     if len(longest_path) < len(path_copy):
+                        longest_path = path_copy
+
+                    # if the new path length is equal to the longest path's length
+                    # and the last value is less than the longest_path's last value
+                    # then choose the copy
+                    if (len(longest_path) == len(path_copy)
+                    and longest_path[-1] > path_copy[-1]):
                         longest_path = path_copy
 
                     # enqueue the copy
                     q.enqueue(path_copy)
         return longest_path[-1]
 
-g = Graph()
-g.add_edge(1,3)
-g.add_edge(2,3)
-g.add_edge(3,6)
-g.add_edge(5,6)
-g.add_edge(5,7)
-g.add_edge(4,5)
-g.add_edge(4,8)
-g.add_edge(8,9)
-g.add_edge(11,8)
-g.add_edge(10,1)
-print(g.vertices)
-print(g.find_earliest_ancestor(6))
+def earliest_ancestor(ancestors, starting_node):
+    g = Graph()
+    for a in ancestors:
+        g.add_edge(a[0], a[1])
+    return g.find_earliest_ancestor(starting_node)
+
+# g = Graph()
+# g.add_edge(1,3)
+# g.add_edge(2,3)
+# g.add_edge(3,6)
+# g.add_edge(5,6)
+# g.add_edge(5,7)
+# g.add_edge(4,5)
+# g.add_edge(4,8)
+# g.add_edge(8,9)
+# g.add_edge(11,8)
+# g.add_edge(10,1)
+# print(g.vertices)
+# print(g.find_earliest_ancestor(6))
