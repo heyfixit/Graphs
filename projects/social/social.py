@@ -87,21 +87,39 @@ class SocialGraph:
         if userID not in self.friendships:
             return visited
         # !!!! IMPLEMENT ME
+
+        # create a queue
         q = Queue()
+
+        # add the current user to the queue
+        # keeping track of paths, so this queue will contain sets
         q.enqueue([userID])
 
         while q.size() > 0:
+
+            # dequeue the first path
             path = q.dequeue()
+
+            # the userID being inspected is the last element in the list
             f = path[-1]
+
+            # if we haven't visited this userID
             if f not in visited:
+
+                # consider it visited
                 # store the path as the shortest route
                 # to this person from the given userID
                 visited[f] = path
 
+                # queue this user's friends
                 for friend in self.friendships[f]:
+
+                    # for each friend copy the path we're at
                     path_copy = list(path)
+                    # add the friend's ID to the end of the new path
                     path_copy.append(friend)
 
+                    # queue up the new friend path for inspection
                     q.enqueue(path_copy)
 
 
