@@ -55,7 +55,7 @@ class Graph:
                 # mark it as visited
                 visited.add(v)
 
-                # add a path to all of its neighbors to the back of the queue
+                # add a path and all of its neighbors to the back of the queue
                 for neighbor in self.vertices[v]:
                     #copy the path
                     path_copy = list(path)
