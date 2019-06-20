@@ -208,3 +208,15 @@ else:
 #         player.travel(cmds[0], True)
 #     else:
 #         print("I did not understand that command.")
+
+"""
+It is very difficult to calculate the shortest possible path that traverses
+the entire graph. Why?
+
+The player has no prior knowledge of the map so there doesn't seem to be a way
+to guess the efficiency of their choice when presented with multiple unexplored
+room choices.
+
+My best path is 990 moves. Can you find a shorter path?
+With the randomness added, I saw 978 once.
+"""
