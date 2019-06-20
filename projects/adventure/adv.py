@@ -46,7 +46,6 @@ direction = exits[random.randint(0,len(exits) - 1)]
 initial_exits = {}
 for e in exits:
     initial_exits[e] = '?'
-# print(initial_exits)
 
 graph[player.currentRoom.id] = initial_exits
 
@@ -56,9 +55,6 @@ graph[player.currentRoom.id] = initial_exits
 while len(graph) < len(roomGraph):
     # assume we left the last iteration inside a room and pointed in a direction
     # to an unknown room
-    #print("############## NEW ITERATION #########################")
-    # world.printRooms()
-    #print("Direction we're headed: ", direction)
 
     # remember the last room we were in
     last_room = player.currentRoom
@@ -66,9 +62,6 @@ while len(graph) < len(roomGraph):
     # move in that direction
     player.travel(direction)
     traversalPath.append(direction)
-    #print(f"--------CURRENT ROOM: {player.currentRoom.id}-----------")
-    #print("Graph length: ", len(graph) )
-    #print("Room Graph Length: ", len(roomGraph))
 
 
     # update the room using the last room we were in
@@ -103,7 +96,6 @@ while len(graph) < len(roomGraph):
             unexplored_count += 1
             unexplored_directions.append(k)
     if len(room_exits) == 1 or unexplored_count == 0:
-        #print("******** DEAD END *********")
         # walk the shortest path to closest room with an unexplored direction
         # breadth first search to find that path
         visited = set()
@@ -126,7 +118,6 @@ while len(graph) < len(roomGraph):
             room_id = t[1]
             room_direction = t[0]
 
-            # if we haven't checked this room for ?'s yet
 
             # NOTE: we might want to keep an iteration count here
             # to see if we check all of the rooms and none of them
@@ -134,6 +125,7 @@ while len(graph) < len(roomGraph):
             if len(graph) == len(roomGraph):
                 break
 
+            # if we haven't checked this room for ?'s yet
             if room_id not in visited:
 
                 # mark it as visited now
@@ -147,7 +139,6 @@ while len(graph) < len(roomGraph):
                     if v == '?':
                         unexplored = k
                         # we found a ?
-                        #print(f"Next closest unexplored: Room: {room_id}, direction: {room_direction}")
                         break
                     else:
                         # queue up these rooms
@@ -160,12 +151,10 @@ while len(graph) < len(roomGraph):
                     # we have the path to this room
                     # and we know a direction that hasn't been explored
                     # move the player here, set the direction
-                    #print(f"Moving there from Room: {player.currentRoom.id}")
                     for t in path:
                         # t is a tuple of (direction, room_id)
                         # so move the player along each direction
                         player.travel(t[0])
-                        #print(f"Moved {t[0]}")
 
                         # add the movements to the traversalPath
                         traversalPath.append(t[0])
@@ -175,17 +164,7 @@ while len(graph) < len(roomGraph):
     else:
         # maybe we can get better solutions by randomizing
         # our decision here in the case of multiple ?'s
-        # we do not need to backtrack
-        # find the next unexplored direction
-        #print("More than one exit available: ", room_exits)
         direction = unexplored_directions[random.randint(0,len(unexplored_directions) - 1)]
-        # for k,v in room_exits.items():
-        #     if v == '?':
-        #         direction = k
-        #         #print("Next unexplored direction: ", k)
-        #         # we found a ?
-        #         break
-    # input("Next? ")
 
 
 print(traversalPath)
