@@ -97,9 +97,11 @@ while len(graph) < len(roomGraph):
     # a fully explored node can occur at crossroads as well, count those as dead ends
     # count the question marks first
     unexplored_count = 0
+    unexplored_directions = []
     for k,v in graph[player.currentRoom.id].items():
         if v == '?':
             unexplored_count += 1
+            unexplored_directions.append(k)
     if len(room_exits) == 1 or unexplored_count == 0:
         #print("******** DEAD END *********")
         # walk the shortest path to closest room with an unexplored direction
@@ -171,15 +173,18 @@ while len(graph) < len(roomGraph):
                     direction = unexplored
                     break
     else:
+        # maybe we can get better solutions by randomizing
+        # our decision here in the case of multiple ?'s
         # we do not need to backtrack
         # find the next unexplored direction
         #print("More than one exit available: ", room_exits)
-        for k,v in room_exits.items():
-            if v == '?':
-                direction = k
-                #print("Next unexplored direction: ", k)
-                # we found a ?
-                break
+        direction = unexplored_directions[random.randint(0,len(unexplored_directions) - 1)]
+        # for k,v in room_exits.items():
+        #     if v == '?':
+        #         direction = k
+        #         #print("Next unexplored direction: ", k)
+        #         # we found a ?
+        #         break
     # input("Next? ")
 
 
