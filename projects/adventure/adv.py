@@ -7,6 +7,7 @@ sys.path.insert(0, '../graph')
 from util import Stack, Queue  # These may come in handy
 
 import random
+import time
 
 # Load world
 world = World()
@@ -38,6 +39,9 @@ direction_opposites = {
     'w': 'e'
 }
 
+# sleep time between frames
+sleep_time = 0.06
+
 # pick a random direction to start
 exits = player.currentRoom.getExits()
 direction = exits[random.randint(0,len(exits) - 1)]
@@ -52,6 +56,11 @@ graph[player.currentRoom.id] = initial_exits
 # in the end, our player will have visted all rooms in the roomGraph
 # so maybe we should iterate until the player's graph is as long as the
 # roomGraph
+print("\033c", end="")
+world.printRooms(player)
+input()
+room_history = set([player.currentRoom])
+
 while len(graph) < len(roomGraph):
     # assume we left the last iteration inside a room and pointed in a direction
     # to an unknown room
@@ -62,6 +71,11 @@ while len(graph) < len(roomGraph):
     # move in that direction
     player.travel(direction)
     traversalPath.append(direction)
+    room_history.add(player.currentRoom)
+    print("\033c", end="")
+    world.printRooms(player, room_history)
+    # input()
+    time.sleep(sleep_time)
 
 
     # update the room using the last room we were in
@@ -155,6 +169,11 @@ while len(graph) < len(roomGraph):
                         # t is a tuple of (direction, room_id)
                         # so move the player along each direction
                         player.travel(t[0])
+                        room_history.add(player.currentRoom)
+                        print("\033c", end="")
+                        world.printRooms(player, room_history)
+                        time.sleep(sleep_time)
+                        # input()
 
                         # add the movements to the traversalPath
                         traversalPath.append(t[0])
