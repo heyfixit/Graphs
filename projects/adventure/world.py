@@ -1,7 +1,6 @@
 from room import Room
 import random
 import math
-from termcolor import colored
 
 class World:
     def __init__(self):
@@ -35,7 +34,7 @@ class World:
                 self.rooms[roomID].connectRooms('w', self.rooms[roomGraph[roomID][1]['w']])
         self.startingRoom = self.rooms[0]
 
-    def printRooms(self, player=None, visited=None):
+    def printRooms(self):
         rotatedRoomGrid = []
         for i in range(0, len(self.roomGrid)):
             rotatedRoomGrid.append([None] * len(self.roomGrid))
@@ -68,12 +67,7 @@ class World:
                 else:
                     str += " "
                 if room is not None:
-                    if player and player.currentRoom == room:
-                        str += colored(f"{room.id}".zfill(3), 'magenta', 'on_grey')
-                    elif visited and room in visited:
-                        str += colored(f"{room.id}".zfill(3), 'yellow')
-                    else:
-                        str += f"{room.id}".zfill(3)
+                    str += f"{room.id}".zfill(3)
                 else:
                     str += "   "
                 if room is not None and room.e_to is not None:
@@ -91,5 +85,3 @@ class World:
             str += "#\n"
         print(str)
         print("#####")
-
-
