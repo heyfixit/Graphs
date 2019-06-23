@@ -1,6 +1,7 @@
 from room import Room
 from player import Player
 from world import World
+from adv_visualizer import AdvVisualizer
 
 import sys
 sys.path.insert(0, '../graph')
@@ -39,6 +40,14 @@ direction_opposites = {
     'w': 'e'
 }
 
+# seeds:
+# 1561273218841: 977 moves
+
+# set seed to current time in millis
+# seed = int(round(time.time() * 1000))
+seed = 1561273218841
+random.seed(seed)
+
 # sleep time between frames
 sleep_time = 0.06
 
@@ -55,11 +64,6 @@ graph[player.currentRoom.id] = initial_exits
 
 # in the end, our player will have visted all rooms in the roomGraph
 # so maybe we should iterate until the player's graph is as long as the
-# roomGraph
-print("\033c", end="")
-world.printRooms(player)
-input()
-room_history = set([player.currentRoom])
 
 while len(graph) < len(roomGraph):
     # assume we left the last iteration inside a room and pointed in a direction
@@ -71,11 +75,6 @@ while len(graph) < len(roomGraph):
     # move in that direction
     player.travel(direction)
     traversalPath.append(direction)
-    room_history.add(player.currentRoom)
-    print("\033c", end="")
-    world.printRooms(player, room_history)
-    # input()
-    time.sleep(sleep_time)
 
 
     # update the room using the last room we were in
@@ -169,11 +168,6 @@ while len(graph) < len(roomGraph):
                         # t is a tuple of (direction, room_id)
                         # so move the player along each direction
                         player.travel(t[0])
-                        room_history.add(player.currentRoom)
-                        print("\033c", end="")
-                        world.printRooms(player, room_history)
-                        time.sleep(sleep_time)
-                        # input()
 
                         # add the movements to the traversalPath
                         traversalPath.append(t[0])
@@ -186,19 +180,12 @@ while len(graph) < len(roomGraph):
         direction = unexplored_directions[random.randint(0,len(unexplored_directions) - 1)]
 
 
-print(traversalPath)
-
-
-
-
-
-
-
-
-
-
-
-
+adv_vis = AdvVisualizer()
+adv_vis.loadGraph(roomGraph)
+adv_vis.tail_color = (81, 255, 7)
+adv_vis.room_color = (0, 98, 178)
+adv_vis.head_color = (255, 0, 246)
+adv_vis.walk_rooms(traversalPath)
 
 # TRAVERSAL TEST
 visited_rooms = set()
@@ -215,6 +202,7 @@ else:
     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
     print(f"{len(roomGraph) - len(visited_rooms)} unvisited rooms")
 
+print("Seed: ", seed)
 
 
 #######
